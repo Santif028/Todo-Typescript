@@ -1,0 +1,24 @@
+import { TodoTitle } from "@/types/types"
+import { useState } from "react"
+
+interface Props {
+    saveTodo: ({ title }: TodoTitle) => void
+}
+
+export const CreateTodo: React.FC<Props> = ({ saveTodo }) => {
+    const [inputValue, setInputValue] = useState('');
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        saveTodo( {title: inputValue});
+        setInputValue('');
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="border-b-2 border-gray-300 flex">
+            <input name="createTodo" type="text" value={inputValue} onChange={(e) => {
+                setInputValue(e.target.value)
+            }} placeholder="What do you want to do?" autoFocus required className="m-2 text-xl w-full"/>
+        </form>
+    )
+}
