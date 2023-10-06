@@ -1,16 +1,15 @@
-import { TodoTitle } from "@/types/types"
 import { useState } from "react"
+import { useTodos } from "@/context/TodoContext";
 
-interface Props {
-    saveTodo: ({ title }: TodoTitle) => void
-}
 
-export const CreateTodo: React.FC<Props> = ({ saveTodo }) => {
-    const [inputValue, setInputValue] = useState('');
+export const CreateTodo: React.FC = () => {
+    const { createTodo } = useTodos();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const [inputValue, setInputValue] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        saveTodo( {title: inputValue});
+        await createTodo({title: inputValue});
         setInputValue('');
     }
 
@@ -18,7 +17,7 @@ export const CreateTodo: React.FC<Props> = ({ saveTodo }) => {
         <form onSubmit={handleSubmit} className="border-b-2 border-gray-300 flex">
             <input name="createTodo" type="text" value={inputValue} onChange={(e) => {
                 setInputValue(e.target.value)
-            }} placeholder="What do you want to do?" autoFocus required className="m-2 text-xl w-full"/>
+            }} placeholder="What do you want to do?" autoFocus required className="m-2 text-xl w-full" />
         </form>
     )
 }

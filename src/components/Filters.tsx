@@ -1,17 +1,15 @@
 import { FILTERS_BUTTONS } from "@/consts/consts"
+import { useTodos } from "@/context/TodoContext"
 import { type FilterValue } from "@/types/types"
 
-interface Props {
-    filterSelected: FilterValue
-    handleFilterChange: (filters: FilterValue) => void
-}
+export const Filters: React.FC = () => {
+    const { filter, selectFilter } = useTodos()
 
-export const Filters: React.FC<Props> = ({ handleFilterChange, filterSelected }) => {
     return (
         <ul className="flex gap-1">
             {
                 Object.entries(FILTERS_BUTTONS).map(([key, { href, lit }]) => {
-                    const isSelected = key === filterSelected
+                    const isSelected = key === filter
 
                     return (
                         <li key={key} className={`${isSelected ? 'bg-yellow-300' : ''} rounded border-black border px-1`}>
@@ -19,7 +17,7 @@ export const Filters: React.FC<Props> = ({ handleFilterChange, filterSelected })
                                 href={href}
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    handleFilterChange(key as FilterValue);
+                                    selectFilter(key as FilterValue);
                                 }}
                             >
                                 {lit}

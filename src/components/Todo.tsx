@@ -1,12 +1,15 @@
 import { type Props } from "../types/types";
 import { useState } from "react";
+import { useTodos } from "@/context/TodoContext";
 
-export const Todo: React.FC<Props> = ({ id, title, completed, handleRemove, handleCompleted, handleUpdate }) => {
+export const Todo: React.FC<Props> = ({ id, title, completed }) => {
+    const { deleteTodo, updateTodo, completeTodo } = useTodos()
+
     const [inputValue, setInputValue] = useState('');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        handleUpdate({ id: id, title: inputValue });
+        updateTodo({ id: id, title: inputValue });
         setInputValue('');
     }
 
@@ -16,8 +19,8 @@ export const Todo: React.FC<Props> = ({ id, title, completed, handleRemove, hand
                 type="checkbox"
                 name="completed"
                 checked={completed}
-                onChange={(e) => {
-                    handleCompleted({ id, completed: e.target.checked })
+                onChange={async (e) => {
+                    await completeTodo({ id, completed: e.target.checked })
                 }}
                 readOnly
                 className=" accent-blue-800 checked:bg-blue-500"
@@ -27,8 +30,9 @@ export const Todo: React.FC<Props> = ({ id, title, completed, handleRemove, hand
                     setInputValue(e.target.value)
                 }} />
             </form>
-            <button onClick={() => {
-                handleRemove({ id });
+            <button onClick={async () => {
+                await deleteTodo({ id });
+
             }
             } className="hover:text-red-700">X</button>
         </div>

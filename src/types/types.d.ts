@@ -1,9 +1,9 @@
 import { TODO_FILTERS } from "@/consts/consts"
 
 export interface Todo {
-    id: string,
+    id?: number,
     title: string,
-    completed: boolean
+    completed?: boolean
 }
 
 export type TodoId = Pick<Todo, 'id'>
@@ -16,9 +16,10 @@ type ListOfTodos = Todo[]
 
 export interface Props extends Todo {
     todos : ListOfTodos
-    handleRemove: ( {id}: TodoId ) => void
-    handleCompleted: ({id, completed}: TodoIdCompleted) => void
-    handleUpdate: ({id, title}: TodoIdTitle) => void
+}
+
+export interface Params {
+    params: {id: TodoId}
 }
 
 export type FilterValue = typeof TODO_FILTERS[keyof typeof TODO_FILTERS]

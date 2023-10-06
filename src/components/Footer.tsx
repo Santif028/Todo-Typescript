@@ -1,21 +1,8 @@
-import { FilterValue } from "@/types/types"
 import { Filters } from "./Filters"
+import { useTodos } from "@/context/TodoContext"
 
-interface Props {
-    filterSelected: FilterValue
-    activeCount: number,
-    completedCount: number,
-    handleFilterChange: (filter: FilterValue) => void
-    onClearCompleted: () => void
-}
-
-export const Footer: React.FC<Props> = ({
-    filterSelected,
-    activeCount = 0,
-    completedCount = 0,
-    handleFilterChange,
-    onClearCompleted
-}) => {
+export const Footer: React.FC = () => {
+    const { activeCount, completedCount, deleteCompleted } = useTodos();
     return (
         <footer className="flex justify-between items-center m-2">
             <span>
@@ -23,12 +10,12 @@ export const Footer: React.FC<Props> = ({
             </span>
 
             <Filters
-                filterSelected={filterSelected}
-                handleFilterChange={handleFilterChange}
             />
 
             <button
-                onClick={onClearCompleted}
+                onClick={async () => {
+                    await deleteCompleted()
+                }}
                 className={`${completedCount > 0 ? '' : 'invisible'} hover:underline`}
             >
                 Clear completed
